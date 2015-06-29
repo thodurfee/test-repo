@@ -1,0 +1,10 @@
+setwd("Google Drive/The Data Scientist’s Toolbox/test-repo/")
+condition <- c(rep("A",100),rep("B",100))
+dv1 <- c(rnorm(100,4,1.5),rnorm(100,6,1.5))
+dv2 <- c(rnorm(100,6,1.5),rnorm(100,4,1.5))
+fakedata <- data.frame(condition,dv1,dv2)
+write.table(fakedata,"fakedata.csv",sep=",",row.names = FALSE,col.names = TRUE)
+
+fakedata.url <- url("https://raw.githubusercontent.com/nmmichalak/test-repo/master/fakedata.csv")
+fakedata <- read.csv(fakedata.url,sep=",",header = TRUE)
+head(fakedata)

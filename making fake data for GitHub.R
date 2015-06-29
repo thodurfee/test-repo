@@ -29,3 +29,5 @@ anovas <- sapply(list("dv1","dv2"),function(i) {
 },
 simplify = FALSE,USE.NAMES = TRUE)
 densities
+plots
+anovas

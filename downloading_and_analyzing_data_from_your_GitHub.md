@@ -7,9 +7,9 @@ June 29, 2015
 setwd("~/")
 setwd("Google Drive/The Data Scientist’s Toolbox/test-repo/")
 #ignore this because this is my GitHub repo that's on GitHub and on my computer
-condition <- c(rep("A",1000),rep("B",1000)) #make condition factor
-dv1 <- c(rnorm(1000,4,1.5),rnorm(1000,6,1.5)) #make one dv
-dv2 <- c(rnorm(1000,6,1.5),rnorm(1000,4,1.5)) #and another
+condition <- c(rep("A",10000),rep("B",10000)) #make condition factor
+dv1 <- c(rnorm(10000,4,1.5),rnorm(10000,6,1.5)) #make one dv
+dv2 <- c(rnorm(10000,6,1.5),rnorm(10000,4,1.5)) #and another
 fakedata <- data.frame(condition,dv1,dv2) #combine above into a dataframe
 write.table(fakedata,"fakedata.csv",sep=",",row.names = FALSE,col.names = TRUE) #save as a csv
 ```

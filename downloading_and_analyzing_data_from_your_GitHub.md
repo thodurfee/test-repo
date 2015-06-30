@@ -7,9 +7,9 @@ June 29, 2015
 setwd("~/")
 setwd("Google Drive/The Data Scientist’s Toolbox/test-repo/")
 #ignore this because this is my GitHub repo that's on GitHub and on my computer
-condition <- c(rep("A",100),rep("B",100)) #make condition factor
-dv1 <- c(rnorm(100,4,1.5),rnorm(100,6,1.5)) #make one dv
-dv2 <- c(rnorm(100,6,1.5),rnorm(100,4,1.5)) #and another
+condition <- c(rep("A",1000),rep("B",1000)) #make condition factor
+dv1 <- c(rnorm(1000,4,1.5),rnorm(1000,6,1.5)) #make one dv
+dv2 <- c(rnorm(1000,6,1.5),rnorm(1000,4,1.5)) #and another
 fakedata <- data.frame(condition,dv1,dv2) #combine above into a dataframe
 write.table(fakedata,"fakedata.csv",sep=",",row.names = FALSE,col.names = TRUE) #save as a csv
 ```
@@ -27,13 +27,13 @@ head(fakedata) #see what it looks like
 ```
 
 ```
-##   condition         dv1      dv2
-## 1         A 0.007044629 5.095607
-## 2         A 3.528289159 4.280789
-## 3         A 4.193007879 6.350207
-## 4         A 4.800110951 6.632543
-## 5         A 2.333643832 5.043709
-## 6         A 4.640153863 7.550138
+##   condition      dv1      dv2
+## 1         A 5.117141 8.769191
+## 2         A 5.099753 4.116358
+## 3         A 2.317778 3.562209
+## 4         A 3.258917 7.633193
+## 5         A 3.586308 7.009617
+## 6         A 3.240490 8.589465
 ```
 
 ##Plot code
@@ -64,6 +64,70 @@ anovas <- sapply(c("dv1","dv2"),function(i) {
   anova(lm(formula,fakedata))
 },
 simplify = FALSE,USE.NAMES = TRUE)
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+fakedata <- tbl_df(fakedata)
+descriptives <- sapply(c("dv1","dv2"),function(i) {
+  fakedata %>% group_by(.,condition) %>% summarise(.,n=n(),
+                                                   M=mean(i),
+                                                   SD=sd(i))
+},
+simplify = FALSE,USE.NAMES = TRUE)
+```
+
+```
+## Warning in mean.default("dv1"): argument is not numeric or logical:
+## returning NA
+```
+
+```
+## Warning in mean.default("dv1"): argument is not numeric or logical:
+## returning NA
+```
+
+```
+## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
+## introduced by coercion
+```
+
+```
+## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
+## introduced by coercion
+```
+
+```
+## Warning in mean.default("dv2"): argument is not numeric or logical:
+## returning NA
+```
+
+```
+## Warning in mean.default("dv2"): argument is not numeric or logical:
+## returning NA
+```
+
+```
+## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
+## introduced by coercion
+```
+
+```
+## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
+## introduced by coercion
 ```
 
 ###DV 1: Density Plots (read: fancy histograms)
@@ -77,6 +141,18 @@ densities[["dv1"]]
 ###DV1: Mean Plots with 95%CIs
 
 ```r
+library(knitr)
+kable(descriptives[["dv1"]],format = "pandoc")
+```
+
+
+
+condition      n  M    SD 
+----------  ----  ---  ---
+A            100  NA   NA 
+B            100  NA   NA 
+
+```r
 plots[["dv1"]]
 ```
 
@@ -85,15 +161,14 @@ plots[["dv1"]]
 ###DV1: ANOVA
 
 ```r
-library(knitr)
 options(digits=3)
 kable(anovas[["dv1"]],format="pandoc")
 ```
 
               Df   Sum Sq   Mean Sq   F value   Pr(>F)
 ----------  ----  -------  --------  --------  -------
-condition      1      272    272.10       145        0
-Residuals    198      371      1.87        NA       NA
+condition      1      270     270.0       123        0
+Residuals    198      436       2.2        NA       NA
 
 ###DV 2: Density Plots (read: fancy histograms)
 
@@ -104,6 +179,17 @@ densities[["dv2"]]
 ![](downloading_and_analyzing_data_from_your_GitHub_files/figure-html/unnamed-chunk-7-1.png) 
 
 ###DV 2: Mean Plots with 95%CIs
+
+```r
+kable(descriptives[["dv2"]],format = "pandoc")
+```
+
+
+
+condition      n  M    SD 
+----------  ----  ---  ---
+A            100  NA   NA 
+B            100  NA   NA 
 
 ```r
 plots[["dv2"]]
@@ -120,5 +206,5 @@ kable(anovas[["dv2"]],format="pandoc")
 
               Df   Sum Sq   Mean Sq   F value   Pr(>F)
 ----------  ----  -------  --------  --------  -------
-condition      1      225    225.22       107        0
-Residuals    198      418      2.11        NA       NA
+condition      1      242    242.22      89.4        0
+Residuals    198      536      2.71        NA       NA

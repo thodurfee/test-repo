@@ -28,12 +28,12 @@ head(fakedata) #see what it looks like
 
 ```
 ##   condition      dv1      dv2
-## 1         A 2.987293 5.681965
-## 2         A 4.145359 7.379308
-## 3         A 3.698093 7.311977
-## 4         A 4.219311 7.232763
-## 5         A 5.291020 2.811064
-## 6         A 4.895683 6.212784
+## 1         A 3.444175 6.834655
+## 2         A 6.335119 8.944746
+## 3         A 2.675842 6.355704
+## 4         A 5.353078 5.040437
+## 5         A 3.058064 4.958308
+## 6         A 1.506055 4.659582
 ```
 
 ##Plot code
@@ -82,52 +82,7 @@ library(dplyr)
 
 ```r
 fakedata <- tbl_df(fakedata)
-descriptives <- sapply(c("dv1","dv2"),function(i) {
-  fakedata %>% group_by(.,condition) %>% summarise(.,n=n(),
-                                                   M=mean(cat(i)),
-                                                   SD=sd(cat(i)))
-},
-simplify = FALSE,USE.NAMES = TRUE)
-```
-
-```
-## dv1
-```
-
-```
-## Warning in mean.default(cat("dv1")): argument is not numeric or logical:
-## returning NA
-```
-
-```
-## dv1
-```
-
-```
-## Warning in mean.default(cat("dv1")): argument is not numeric or logical:
-## returning NA
-```
-
-```
-## dv1dv1dv2
-```
-
-```
-## Warning in mean.default(cat("dv2")): argument is not numeric or logical:
-## returning NA
-```
-
-```
-## dv2
-```
-
-```
-## Warning in mean.default(cat("dv2")): argument is not numeric or logical:
-## returning NA
-```
-
-```
-## dv2dv2
+descriptives <- fakedata %>% group_by(.,condition) %>% summarise_each(.,funs(length,mean,sd),c(dv1,dv2))
 ```
 
 ###DV 1: Density Plots (read: fancy histograms)
@@ -142,15 +97,16 @@ densities[["dv1"]]
 
 ```r
 library(knitr)
-kable(descriptives[["dv1"]],format = "pandoc")
+options(digits=3)
+kable(descriptives[,c(1,2,4,6)],col.names=c("Condition","n","M","SD"), format = "pandoc")
 ```
 
 
 
-condition       n  M    SD 
-----------  -----  ---  ---
-A            1000  NA   NA 
-B            1000  NA   NA 
+Condition       n      M     SD
+----------  -----  -----  -----
+A            1000   3.92   1.50
+B            1000   5.98   1.54
 
 ```r
 plots[["dv1"]]
@@ -167,8 +123,8 @@ kable(anovas[["dv1"]],format="pandoc")
 
                Df   Sum Sq   Mean Sq   F value   Pr(>F)
 ----------  -----  -------  --------  --------  -------
-condition       1     1851   1850.90       786        0
-Residuals    1998     4707      2.36        NA       NA
+condition       1     2116   2115.91       917        0
+Residuals    1998     4609      2.31        NA       NA
 
 ###DV 2: Density Plots (read: fancy histograms)
 
@@ -181,15 +137,16 @@ densities[["dv2"]]
 ###DV 2: Mean Plots with 95%CIs
 
 ```r
-kable(descriptives[["dv2"]],format = "pandoc")
+options(digits=3)
+kable(descriptives[,c(1,3,5,7)],col.names=c("Condition","n","M","SD"),format = "pandoc")
 ```
 
 
 
-condition       n  M    SD 
-----------  -----  ---  ---
-A            1000  NA   NA 
-B            1000  NA   NA 
+Condition       n      M     SD
+----------  -----  -----  -----
+A            1000   6.07   1.52
+B            1000   4.07   1.44
 
 ```r
 plots[["dv2"]]
@@ -206,5 +163,5 @@ kable(anovas[["dv2"]],format="pandoc")
 
                Df   Sum Sq   Mean Sq   F value   Pr(>F)
 ----------  -----  -------  --------  --------  -------
-condition       1     2257   2256.60      1048        0
-Residuals    1998     4301      2.15        NA       NA
+condition       1     1996   1996.41       911        0
+Residuals    1998     4378      2.19        NA       NA

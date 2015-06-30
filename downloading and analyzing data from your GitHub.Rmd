@@ -64,12 +64,7 @@ anovas <- sapply(c("dv1","dv2"),function(i) {
 simplify = FALSE,USE.NAMES = TRUE)
 library(dplyr)
 fakedata <- tbl_df(fakedata)
-descriptives <- sapply(c("dv1","dv2"),function(i) {
-  fakedata %>% group_by(.,condition) %>% summarise(.,n=n(),
-                                                   M=mean(cat(i)),
-                                                   SD=sd(cat(i)))
-},
-simplify = FALSE,USE.NAMES = TRUE)
+descriptives <- fakedata %>% group_by(.,condition) %>% summarise_each(.,funs(length,mean,sd),c(dv1,dv2))
 ```
 
 ###DV 1: Density Plots (read: fancy histograms)
@@ -80,7 +75,8 @@ densities[["dv1"]]
 ###DV1: Mean Plots with 95%CIs
 ```{r}
 library(knitr)
-kable(descriptives[["dv1"]],format = "pandoc")
+options(digits=3)
+kable(descriptives[,c(1,2,4,6)],col.names=c("Condition","n","M","SD"), format = "pandoc")
 plots[["dv1"]]
 ```
 
@@ -97,7 +93,8 @@ densities[["dv2"]]
 
 ###DV 2: Mean Plots with 95%CIs
 ```{r}
-kable(descriptives[["dv2"]],format = "pandoc")
+options(digits=3)
+kable(descriptives[,c(1,3,5,7)],col.names=c("Condition","n","M","SD"),format = "pandoc")
 plots[["dv2"]]
 ```
 

@@ -66,8 +66,8 @@ library(dplyr)
 fakedata <- tbl_df(fakedata)
 descriptives <- sapply(c("dv1","dv2"),function(i) {
   fakedata %>% group_by(.,condition) %>% summarise(.,n=n(),
-                                                   M=mean(i),
-                                                   SD=sd(i))
+                                                   M=mean(cat(i)),
+                                                   SD=sd(cat(i)))
 },
 simplify = FALSE,USE.NAMES = TRUE)
 ```

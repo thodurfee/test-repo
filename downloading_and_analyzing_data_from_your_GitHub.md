@@ -28,12 +28,12 @@ head(fakedata) #see what it looks like
 
 ```
 ##   condition      dv1      dv2
-## 1         A 5.117141 8.769191
-## 2         A 5.099753 4.116358
-## 3         A 2.317778 3.562209
-## 4         A 3.258917 7.633193
-## 5         A 3.586308 7.009617
-## 6         A 3.240490 8.589465
+## 1         A 2.987293 5.681965
+## 2         A 4.145359 7.379308
+## 3         A 3.698093 7.311977
+## 4         A 4.219311 7.232763
+## 5         A 5.291020 2.811064
+## 6         A 4.895683 6.212784
 ```
 
 ##Plot code
@@ -84,50 +84,50 @@ library(dplyr)
 fakedata <- tbl_df(fakedata)
 descriptives <- sapply(c("dv1","dv2"),function(i) {
   fakedata %>% group_by(.,condition) %>% summarise(.,n=n(),
-                                                   M=mean(i),
-                                                   SD=sd(i))
+                                                   M=mean(cat(i)),
+                                                   SD=sd(cat(i)))
 },
 simplify = FALSE,USE.NAMES = TRUE)
 ```
 
 ```
-## Warning in mean.default("dv1"): argument is not numeric or logical:
+## dv1
+```
+
+```
+## Warning in mean.default(cat("dv1")): argument is not numeric or logical:
 ## returning NA
 ```
 
 ```
-## Warning in mean.default("dv1"): argument is not numeric or logical:
+## dv1
+```
+
+```
+## Warning in mean.default(cat("dv1")): argument is not numeric or logical:
 ## returning NA
 ```
 
 ```
-## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
-## introduced by coercion
+## dv1dv1dv2
 ```
 
 ```
-## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
-## introduced by coercion
-```
-
-```
-## Warning in mean.default("dv2"): argument is not numeric or logical:
+## Warning in mean.default(cat("dv2")): argument is not numeric or logical:
 ## returning NA
 ```
 
 ```
-## Warning in mean.default("dv2"): argument is not numeric or logical:
+## dv2
+```
+
+```
+## Warning in mean.default(cat("dv2")): argument is not numeric or logical:
 ## returning NA
 ```
 
 ```
-## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
-## introduced by coercion
-```
-
-```
-## Warning in var(if (is.vector(x)) x else as.double(x), na.rm = na.rm): NAs
-## introduced by coercion
+## dv2dv2
 ```
 
 ###DV 1: Density Plots (read: fancy histograms)
@@ -147,10 +147,10 @@ kable(descriptives[["dv1"]],format = "pandoc")
 
 
 
-condition      n  M    SD 
-----------  ----  ---  ---
-A            100  NA   NA 
-B            100  NA   NA 
+condition       n  M    SD 
+----------  -----  ---  ---
+A            1000  NA   NA 
+B            1000  NA   NA 
 
 ```r
 plots[["dv1"]]
@@ -165,10 +165,10 @@ options(digits=3)
 kable(anovas[["dv1"]],format="pandoc")
 ```
 
-              Df   Sum Sq   Mean Sq   F value   Pr(>F)
-----------  ----  -------  --------  --------  -------
-condition      1      270     270.0       123        0
-Residuals    198      436       2.2        NA       NA
+               Df   Sum Sq   Mean Sq   F value   Pr(>F)
+----------  -----  -------  --------  --------  -------
+condition       1     1851   1850.90       786        0
+Residuals    1998     4707      2.36        NA       NA
 
 ###DV 2: Density Plots (read: fancy histograms)
 
@@ -186,10 +186,10 @@ kable(descriptives[["dv2"]],format = "pandoc")
 
 
 
-condition      n  M    SD 
-----------  ----  ---  ---
-A            100  NA   NA 
-B            100  NA   NA 
+condition       n  M    SD 
+----------  -----  ---  ---
+A            1000  NA   NA 
+B            1000  NA   NA 
 
 ```r
 plots[["dv2"]]
@@ -204,7 +204,7 @@ options(digits=3)
 kable(anovas[["dv2"]],format="pandoc")
 ```
 
-              Df   Sum Sq   Mean Sq   F value   Pr(>F)
-----------  ----  -------  --------  --------  -------
-condition      1      242    242.22      89.4        0
-Residuals    198      536      2.71        NA       NA
+               Df   Sum Sq   Mean Sq   F value   Pr(>F)
+----------  -----  -------  --------  --------  -------
+condition       1     2257   2256.60      1048        0
+Residuals    1998     4301      2.15        NA       NA
